@@ -211,7 +211,7 @@ foods = [
 
 meds = [
     Med("Great Value Tylenol", 4, 5),
-    Med("Swedish Elixir",41, 15000)
+    Med("Swedish Elixir", 41, 15000)
 ]
 
 main_menu()
