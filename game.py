@@ -120,10 +120,14 @@ def add_animal():
     print(f"\n{name} the {kind}'s freaky ass has been added to the farm!\n")
     time.sleep(1)
 
+def intro_welcome():
+    print("\n\nWelcome to the farm!\n\nHere you can observe and care for a variety of strange and beautiful creatures.")
+    time.sleep(2)
+
 def main_menu():
+    intro_welcome()
     while True:
-        print("\n\nWelcome to the farm!\n\nHere you can observe and care for a variety of strange and beautiful creatures.\n")
-        time.sleep(2)
+        print("\n")
         print("1. Animal Overview")
         print("2. Care for Animals")
         print("3. Add Animal")
@@ -136,8 +140,9 @@ def main_menu():
                 print("\nNo animals to display.")
             else:
                 for animal in animals:
-                    print(f"\n{animal.name} the {animal.kind}: Current Weight = {animal.current_weight} pounds, Healthy Weight = {animal.healthy_weight} pounds.")
-                    time.sleep(0.5)
+                    print(Fore.RED + f"\n{animal.name} the {animal.kind}" + Style.RESET_ALL)
+                    print(f"-Current Weight = {animal.current_weight} pounds\n-Healthy Weight = {animal.healthy_weight} pounds")
+                    time.sleep(0.7)
         elif choice == "2":
             time.sleep(1)
             feed_animals()
