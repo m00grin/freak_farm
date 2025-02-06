@@ -7,41 +7,64 @@ title = text2art("freak.farm")
 print(Fore.GREEN + title + Style.RESET_ALL)
 
 class Animal:
-    def __init__(self, name, kind, current_weight, healthy_weight, pronoun="it"):
+    def __init__(self, name, kind, current_weight, healthy_weight, pronoun="it", health=100):
         self.name = name
         self.kind = kind
         self.current_weight = current_weight
         self.healthy_weight = healthy_weight
         self.pronoun = pronoun
+        self.health = health
     
-    def feed(self, food=None, med=None):
-        print(f"\n{self.name} is currently {self.current_weight} pounds. Commencing care...\n")
+    def feed(self, food=None):
+        print(f"\n{self.name} is currently {self.current_weight} pounds.")
+        print("Commencing care...")
         time.sleep(1.5)
         initial_weight = self.current_weight
-        if self.current_weight > self.healthy_weight:
-            if med:
-                while self.current_weight > self.healthy_weight and med:
-                    self.current_weight -= med.strength
-                    print(f"Administering {self.name} {med.scrip}...")
-                    time.sleep(1)
-                    print(f"Now {self.name} is {self.current_weight} pounds.\n")
-                    time.sleep(.5)
-                print(f"After giving {self.name} {med.scrip}, {self.pronoun} is now {self.current_weight} pounds!\n")
-                time.sleep(2)
-        elif self.current_weight < self.healthy_weight:
-            if food:
-                while self.current_weight < self.healthy_weight and food:
-                    self.current_weight += food.quant
-                    print(f"Feeding {self.name} {food.type}...")
-                    time.sleep(1)
-                    print(f"Now {self.name} is {self.current_weight} pounds.\n")
-                    time.sleep(.5)
+        if self.current_weight > self.healthy_weight and food.quant < 0:
+            while self.current_weight > self.healthy_weight and food.quant < 0:
+                weight_loss = min(abs(food.quant), self.current_weight - self.healthy_weight)
+                self.current_weight -= weight_loss
+                food.quant += weight_loss
+                print(f"Feeding {self.name} {food.type}... making {self.pronoun} LOSE weight!")
+                time.sleep(1)
+                print(f"Now {self.name} is {self.current_weight} pounds.\n")
+                time.sleep(.5)
+        elif self.current_weight < self.healthy_weight and food.quant > 0:
+            while self.current_weight < self.healthy_weight and food.quant > 0:
+                weight_gain = min(food.quant, self.healthy_weight - self.current_weight)
+                self.current_weight += weight_gain
+                food.quant -= weight_gain
+                print(f"Feeding {self.name} {food.type}...")
+                time.sleep(1)
+                print(f"Now {self.name} is {self.current_weight} pounds.\n")
+                time.sleep(.5)
                 print(f"After feeding {self.name} {food.type}, {self.pronoun} is now {self.current_weight} pounds!\n")
                 time.sleep(2)
         else:
-            print(f"{self.name} is all good, and {self.pronoun} does not need food or medicine.\n")
+            print(f"{self.name} is all good, and {self.pronoun} does not need food.\n")
             time.sleep(1)
         print(f"OH SHIT!! Weight change for {self.name}: {initial_weight} -> {self.current_weight}\n")
+        time.sleep(.5)
+
+    def medicate(self, med=None):
+        print(f"\n{self.name} currently has {self.health} health.\n")
+        print("Commencing care...")
+        time.sleep(1.5)
+        initial_health = self.health
+        if self.health < 100:
+            if med:
+                while self.health < 100 and med.strength > 0:
+                    self.health += med.strength
+                    print(f"Administering {self.name} {med.scrip}...")
+                    time.sleep(1)
+                    print(f"Now {self.name} has {self.health} health.\n")
+                    time.sleep(.5)
+                print(f"After giving {self.name} {med.scrip}, {self.pronoun} now has {self.health} health!\n")
+                time.sleep(2)
+        else:
+            print(f"{self.name} is all good, and {self.pronoun} does not need medicine.\n")
+            time.sleep(1)
+        print(f"OH FUCK!! Health change for {self.name}: {initial_health} -> {self.health}\n")
         time.sleep(.5)
 
 class Food:
@@ -56,30 +79,44 @@ class Med:
         self.strength = strength
         self.cost = cost
 
-def find_best_care(animal):
+def find_best_food(animal):
     weight_diff = animal.current_weight - animal.healthy_weight
-    if weight_diff > 0.5 * animal.healthy_weight:
-        best_med = max(meds, key=lambda m: m.strength)
-        return None, best_med
-    elif weight_diff < -0.5 * animal.healthy_weight:
-        best_food = max(foods, key=lambda f: f.quant)
-        return best_food, None
-    elif animal.current_weight > animal.healthy_weight:
-        best_med = min(meds, key=lambda m: m.cost)
-        return None, best_med
+    if weight_diff < -0.3 * animal.healthy_weight:
+        return max(foods, key=lambda f: f.quant)
     elif animal.current_weight < animal.healthy_weight:
-        best_food = min(foods, key=lambda f: f.price)
-        return best_food, None
-    return None, None
+        return min(foods, key=lambda f: f.price)
+    elif animal.current_weight > 1.3 * animal.healthy_weight:
+        return max(foods, key=lambda f: f.quant)
+    elif animal.current_weight > animal.healthy_weight:
+        return min(foods, key=lambda f: f.price)
+    return None
+
+def find_best_med(animal):
+    health_diff = 100 - animal.health
+    if health_diff > 60:
+        return max(meds, key=lambda m: m.strength)
+    elif health_diff > 0:
+        return min(meds, key=lambda m: m.cost)
+    return None
 
 def feed_animals():
     for animal in animals:
-        food, med = find_best_care(animal)
-        if food or med:
-            animal.feed(food, med)
+        food = find_best_food(animal)
+        if food:
+            animal.feed(food)
         else:
             print(f"\n{animal.name} is chillin, {animal.pronoun} fine.\n")
-            time.sleep(1)
+        time.sleep(1)
+        time.sleep(1)
+
+def medicate_animals():
+    for animal in animals:
+        med = find_best_med(animal)
+        if med:
+            animal.medicate(med)
+        else:
+            print(f"\n{animal.name} is chillin, {animal.pronoun} fine.\n")
+        time.sleep(1)
         time.sleep(1)
 
 def add_animal():
@@ -146,6 +183,7 @@ def main_menu():
         elif choice == "2":
             time.sleep(1)
             feed_animals()
+            medicate_animals()
         elif choice == "3":
             time.sleep(1)
             add_animal()
@@ -157,21 +195,23 @@ def main_menu():
             print("Invalid choice. Try harder.")
 
 animals = [
-    Animal("Spott", "Five-legged Dog", 34, 38, "she"),
-    Animal("Assie Stanklin", "Hairless Donkey", 48, 42, "she"),
-    Animal("Angel", "Flightless Angel", 42, 42, "she"),
-    Animal("Fatty", "Washington Mountain Troll", 862, 840, "he"),
-    Animal("Boney", "Cursed Skeleton Grunt", 24, 68, "he")
+    Animal("Spott", "Five-legged Dog", 34, 38, "she", 98),
+    Animal("Assie Stanklin", "Hairless Donkey", 48, 42, "she", 95),
+    Animal("Angel", "Flightless Angel", 42, 42, "she", 100),
+    Animal("Fatty", "Washington Mountain Troll", 862, 840, "he", 68),
+    Animal("Boney", "Cursed Skeleton Grunt", 24, 68, "he", 21)
 ]
 
 foods = [
-    Food("Plain Borgar", 2, 5),
-    Food("Triple Bacon Duck Fat Borgar", 8, 15),
+    Food("KFC Double Down", 7, 5),
+    Food("200 Fucking McGriddles", 17, 60),
+    Food("Wet Kale Salad", -8, 15),
+    Food("Flint Water Soup", -17, 1000)
 ]
 
 meds = [
-    Med("Mostly-safe Diet Pills", 2, 5),
-    Med("FDA-banned Diet Pills from 1998", 8, 15),
+    Med("Great Value Tylenol", 4, 5),
+    Med("Swedish Elixir",41, 15000)
 ]
 
 main_menu()
