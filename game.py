@@ -20,17 +20,17 @@ class Animal:
         print("Commencing care...")
         time.sleep(1.5)
         initial_weight = self.current_weight
-        if self.current_weight > self.healthy_weight and food.quant < 0:
-            while self.current_weight > self.healthy_weight and food.quant < 0:
-                weight_loss = min(abs(food.quant), self.current_weight - self.healthy_weight)
+        if self.current_weight > self.healthy_weight:
+            while self.current_weight > self.healthy_weight and food.healthy is True and food.quant > 0:
+                weight_loss = min(food.quant, self.current_weight - self.healthy_weight)
                 self.current_weight -= weight_loss
-                food.quant += weight_loss
-                print(f"Feeding {self.name} {food.type}... making {self.pronoun} LOSE weight!")
+                food.quant -= weight_loss
+                print(f"Feeding {self.name} {food.type}...")
                 time.sleep(1)
                 print(f"Now {self.name} is {self.current_weight} pounds.\n")
                 time.sleep(.5)
-        elif self.current_weight < self.healthy_weight and food.quant > 0:
-            while self.current_weight < self.healthy_weight and food.quant > 0:
+        elif self.current_weight < self.healthy_weight:
+            while self.current_weight < self.healthy_weight and food.healthy is False and food.quant > 0:
                 weight_gain = min(food.quant, self.healthy_weight - self.current_weight)
                 self.current_weight += weight_gain
                 food.quant -= weight_gain
@@ -68,10 +68,11 @@ class Animal:
         time.sleep(.5)
 
 class Food:
-    def __init__(self, type, quant, price):
+    def __init__(self, type, quant, price, healthy):
         self.type = type
         self.quant = quant
         self.price = price
+        self.healthy = healthy
 
 class Med:
     def __init__(self, scrip, strength, cost):
@@ -81,14 +82,18 @@ class Med:
 
 def find_best_food(animal):
     weight_diff = animal.current_weight - animal.healthy_weight
-    if weight_diff < -0.3 * animal.healthy_weight:
-        return max(foods, key=lambda f: f.quant)
-    elif animal.current_weight < animal.healthy_weight:
-        return min(foods, key=lambda f: f.price)
-    elif animal.current_weight > 1.3 * animal.healthy_weight:
-        return max(foods, key=lambda f: f.quant)
-    elif animal.current_weight > animal.healthy_weight:
-        return min(foods, key=lambda f: f.price)
+    if weight_diff > 0:
+        healthy_foods = [f for f in foods if f.healthy]
+        if weight_diff > 0.3 * animal.healthy_weight and healthy_foods:
+            return max(healthy_foods, key=lambda f: f.quant)
+        elif healthy_foods:
+            return min(healthy_foods, key=lambda f: f.price)
+    elif weight_diff < 0:
+        unhealthy_foods = [f for f in foods if not f.healthy]
+        if weight_diff < -0.3 * animal.healthy_weight and unhealthy_foods:
+            return max(unhealthy_foods, key=lambda f: f.quant)
+        elif unhealthy_foods:
+            return min(unhealthy_foods, key=lambda f: f.price)
     return None
 
 def find_best_med(animal):
@@ -198,15 +203,15 @@ animals = [
     Animal("Spott", "Five-legged Dog", 34, 38, "she", 98),
     Animal("Assie Stanklin", "Hairless Donkey", 48, 42, "she", 95),
     Animal("Angel", "Flightless Angel", 42, 42, "she", 100),
-    Animal("Fatty", "Washington Mountain Troll", 862, 840, "he", 68),
+    Animal("Fatty", "Washington Mountain Troll", 1096, 840, "he", 68),
     Animal("Boney", "Cursed Skeleton Grunt", 24, 68, "he", 21)
 ]
 
 foods = [
-    Food("KFC Double Down", 7, 5),
-    Food("200 Fucking McGriddles", 17, 60),
-    Food("Wet Kale Salad", -8, 15),
-    Food("Flint Water Soup", -17, 1000)
+    Food("KFC Double Down", 7, 5, False),
+    Food("200 Fucking McGriddles", 17, 60, False),
+    Food("Wet Kale Salad", 8, 15, True),
+    Food("Flint Water Soup", 62, 1000, True)
 ]
 
 meds = [
