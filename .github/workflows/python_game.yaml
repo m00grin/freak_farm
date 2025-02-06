@@ -28,7 +28,7 @@ jobs:
         pip install flake8 pytest
 
     - name: List installed packages
-      run: pip freeze  # Verify installed dependencies
+      run: pip freeze
 
     - name: Lint with flake8
       run: |
@@ -36,4 +36,4 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
     - name: Run tests with pytest
-      run: pytest  # Automatically discovers and runs tests in test_*.py files
+      run: pytest -s
