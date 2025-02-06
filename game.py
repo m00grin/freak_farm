@@ -21,19 +21,15 @@ class Animal:
         time.sleep(1.5)
         initial_weight = self.current_weight
         if self.current_weight > self.healthy_weight:
-            while self.current_weight > self.healthy_weight and food.healthy is True and food.quant > 0:
-                weight_loss = min(food.quant, self.current_weight - self.healthy_weight)
-                self.current_weight -= weight_loss
-                food.quant -= weight_loss
+            while self.current_weight > self.healthy_weight and food.healthy is True:
+                self.current_weight -= food.quant
                 print(f"Feeding {self.name} {food.type}...")
                 time.sleep(1)
                 print(f"Now {self.name} is {self.current_weight} pounds.\n")
                 time.sleep(.5)
         elif self.current_weight < self.healthy_weight:
-            while self.current_weight < self.healthy_weight and food.healthy is False and food.quant > 0:
-                weight_gain = min(food.quant, self.healthy_weight - self.current_weight)
-                self.current_weight += weight_gain
-                food.quant -= weight_gain
+            while self.current_weight < self.healthy_weight and food.healthy is False:
+                self.current_weight += food.quant
                 print(f"Feeding {self.name} {food.type}...")
                 time.sleep(1)
                 print(f"Now {self.name} is {self.current_weight} pounds.\n")
@@ -81,16 +77,15 @@ class Med:
         self.cost = cost
 
 def find_best_food(animal):
-    weight_diff = animal.current_weight - animal.healthy_weight
-    if weight_diff > 0:
+    if animal.current_weight >  animal.healthy_weight:
         healthy_foods = [f for f in foods if f.healthy]
-        if weight_diff > 0.3 * animal.healthy_weight and healthy_foods:
+        if animal.current_weight > 1.3 * animal.healthy_weight and healthy_foods:
             return max(healthy_foods, key=lambda f: f.quant)
         elif healthy_foods:
             return min(healthy_foods, key=lambda f: f.price)
-    elif weight_diff < 0:
+    elif animal.current_weight < animal.healthy_weight:
         unhealthy_foods = [f for f in foods if not f.healthy]
-        if weight_diff < -0.3 * animal.healthy_weight and unhealthy_foods:
+        if animal.current_weight < .6 * animal.healthy_weight and unhealthy_foods:
             return max(unhealthy_foods, key=lambda f: f.quant)
         elif unhealthy_foods:
             return min(unhealthy_foods, key=lambda f: f.price)
