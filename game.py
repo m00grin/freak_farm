@@ -180,6 +180,16 @@ def intro_welcome():
     print("\n\nWelcome to the farm!\n\nHere you can observe and care for a variety of strange and beautiful creatures.")
     time.sleep(2)
 
+def animal_overview():
+    for animal in animals:
+        print(Fore.RED + f"\n{animal.name} the {animal.kind}" + Style.RESET_ALL)
+        weight_status = "(Overweight)" if animal.current_weight > animal.healthy_weight else \
+                        "(Underweight)" if animal.current_weight < animal.healthy_weight else \
+                        "(Healthy Weight)"
+        print(f"Current Weight: {animal.current_weight} pounds {weight_status}")
+        print(f"Current Health: {animal.health} / 100")
+        time.sleep(1)
+
 def main_menu():
     intro_welcome()
     while True:
@@ -193,13 +203,7 @@ def main_menu():
         choice = input("\nPlease choose an option: ")
         if choice == "1":
             time.sleep(1)
-            if not animals:
-                print("\nNo animals to display.")
-            else:
-                for animal in animals:
-                    print(Fore.RED + f"\n{animal.name} the {animal.kind}" + Style.RESET_ALL)
-                    print(f"-Current Weight = {animal.current_weight} pounds\n-Healthy Weight = {animal.healthy_weight} pounds")
-                    time.sleep(0.7)
+            animal_overview()
         elif choice == "2":
             time.sleep(1)
             feed_animals()
