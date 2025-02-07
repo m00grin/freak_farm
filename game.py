@@ -56,7 +56,7 @@ class Animal:
             print(f"{self.name} is all good, and {self.pronoun} does not need food.\n")
             time.sleep(1)
         print(f"OH SHIT!! Weight change for {self.name}: {initial_weight} -> {self.current_weight}\n")
-        # save_data()
+#        save_data()
         time.sleep(.5)
 
     def medicate(self, med=None):
@@ -78,7 +78,7 @@ class Animal:
             print(f"{self.name} is all good, and {self.pronoun} does not need medicine.\n")
             time.sleep(1)
         print(f"OH FUCK!! Health change for {self.name}: {initial_health} -> {self.health}\n")
-        # save_data()
+#        save_data()
         time.sleep(.5)
 
 class Food:
@@ -173,7 +173,7 @@ def add_animal():
     new_animal = Animal(name, kind, current_weight, healthy_weight, pronoun)
     animals.append(new_animal)
     print(f"\n{name} the {kind}'s freaky ass has been added to the farm!\n")
-    # save_data()
+#    save_data()
     time.sleep(1)
 
 def intro_welcome():
@@ -185,9 +185,10 @@ def main_menu():
     while True:
         print("\n")
         print("1. Animal Overview")
-        print("2. Care for Animals")
-        print("3. Add Animal")
-        print("4. Quit")
+        print("2. Feed Animals")
+        print("3. Medicate Animals")
+        print("4. Add Animal")
+        print("5. Quit")
         time.sleep(.5)
         choice = input("\nPlease choose an option: ")
         if choice == "1":
@@ -202,11 +203,13 @@ def main_menu():
         elif choice == "2":
             time.sleep(1)
             feed_animals()
-            medicate_animals()
         elif choice == "3":
             time.sleep(1)
-            add_animal()
+            medicate_animals()
         elif choice == "4":
+            time.sleep(1)
+            add_animal()
+        elif choice == "5":
             time.sleep(0.5)
             print("\nBye bitch!")
             exit()
