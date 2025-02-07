@@ -23,13 +23,14 @@ title = text2art("freak.farm")
 print(Fore.GREEN + title + Style.RESET_ALL)
 
 class Animal:
-    def __init__(self, name, kind, current_weight, healthy_weight, pronoun="it", health=100):
+    def __init__(self, name, kind, current_weight, healthy_weight, pronoun="it", health=100, clean=False):
         self.name = name
         self.kind = kind
         self.current_weight = current_weight
         self.healthy_weight = healthy_weight
         self.pronoun = pronoun
         self.health = health
+        self.clean = clean
     
     def feed(self, food=None):
         print(f"\n{self.name} is currently {self.current_weight} pounds.")
@@ -124,8 +125,7 @@ def feed_animals():
             animal.feed(food)
         else:
             print(f"\n{animal.name} is chillin, {animal.pronoun} fine.\n")
-        time.sleep(1)
-        time.sleep(1)
+        time.sleep(2)
 
 def medicate_animals():
     for animal in animals:
@@ -134,8 +134,18 @@ def medicate_animals():
             animal.medicate(med)
         else:
             print(f"\n{animal.name} is chillin, {animal.pronoun} fine.\n")
-        time.sleep(1)
-        time.sleep(1)
+        time.sleep(2)
+
+def groom_animals():
+    for animal in animals:
+        if animal.clean:
+            print(f"\n{animal.name} is chillin, {animal.pronoun} fine.\n")
+        else:
+            animal.clean = True
+            print(f"{animal.name} is filthy! Commencing grooming...")
+            time.sleep(2)
+            print(f"\n{animal.name} has been groomed and is happy and clean!\n")
+        time.sleep(2)
 
 def add_animal():
     print("\nAdding a new animal...\n")
@@ -186,8 +196,11 @@ def animal_overview():
         weight_status = "(Overweight)" if animal.current_weight > animal.healthy_weight else \
                         "(Underweight)" if animal.current_weight < animal.healthy_weight else \
                         "(Healthy Weight)"
+        cleanliness = "Clean & Fresh" if animal.clean else\
+                      "Filthy & Gross"
         print(f"Current Weight: {animal.current_weight} pounds {weight_status}")
         print(f"Current Health: {animal.health} / 100")
+        print(f"{cleanliness}")
         time.sleep(1)
 
 def main_menu():
@@ -197,8 +210,9 @@ def main_menu():
         print("1. Animal Overview")
         print("2. Feed Animals")
         print("3. Medicate Animals")
-        print("4. Add Animal")
-        print("5. Quit")
+        print("4. Groom Animals")
+        print("5. Add Animal")
+        print("6. Quit")
         time.sleep(.5)
         choice = input("\nPlease choose an option: ")
         if choice == "1":
@@ -212,8 +226,11 @@ def main_menu():
             medicate_animals()
         elif choice == "4":
             time.sleep(1)
-            add_animal()
+            groom_animals()
         elif choice == "5":
+            time.sleep(1)
+            add_animal()
+        elif choice == "6":
             time.sleep(0.5)
             print("\nBye bitch!")
             exit()

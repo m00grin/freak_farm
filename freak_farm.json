@@ -30,7 +30,8 @@
             "current_weight": 42,
             "healthy_weight": 42,
             "pronoun": "she",
-            "health": 100
+            "health": 100,
+            "clean": true
         },
         {
             "name": "Assie Stanklin",
