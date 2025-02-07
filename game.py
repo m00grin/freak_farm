@@ -1,6 +1,22 @@
+import os
+import json
 import time
 from art import text2art
 from colorama import Fore, Style
+
+def load_data():
+    if os.path.exists("freak_farm.json"):
+        with open("freak_farm.json", "r") as file:
+            return json.load(file)
+    return {"animals": [], "foods": [], "meds": []}
+
+def save_data():
+    with open("freak_farm.json", "w") as file:
+        json.dump({
+            "animals": [vars(a) for a in animals],
+            "foods": [vars(f) for f in foods],
+            "meds": [vars(m) for m in meds]
+        }, file, indent=4)
 
 print("\n")
 title = text2art("freak.farm")
@@ -17,7 +33,7 @@ class Animal:
     
     def feed(self, food=None):
         print(f"\n{self.name} is currently {self.current_weight} pounds.")
-        print("Commencing care...")
+        print("Commencing feeding...")
         time.sleep(1.5)
         initial_weight = self.current_weight
         if self.current_weight > self.healthy_weight:
@@ -40,6 +56,7 @@ class Animal:
             print(f"{self.name} is all good, and {self.pronoun} does not need food.\n")
             time.sleep(1)
         print(f"OH SHIT!! Weight change for {self.name}: {initial_weight} -> {self.current_weight}\n")
+        # save_data()
         time.sleep(.5)
 
     def medicate(self, med=None):
@@ -61,6 +78,7 @@ class Animal:
             print(f"{self.name} is all good, and {self.pronoun} does not need medicine.\n")
             time.sleep(1)
         print(f"OH FUCK!! Health change for {self.name}: {initial_health} -> {self.health}\n")
+        # save_data()
         time.sleep(.5)
 
 class Food:
@@ -155,6 +173,7 @@ def add_animal():
     new_animal = Animal(name, kind, current_weight, healthy_weight, pronoun)
     animals.append(new_animal)
     print(f"\n{name} the {kind}'s freaky ass has been added to the farm!\n")
+    # save_data()
     time.sleep(1)
 
 def intro_welcome():
@@ -194,24 +213,9 @@ def main_menu():
         else:
             print("Invalid choice. Try harder.")
 
-animals = [
-    Animal("Spott", "Five-legged Dog", 34, 38, "she", 98),
-    Animal("Assie Stanklin", "Hairless Donkey", 48, 42, "she", 95),
-    Animal("Angel", "Flightless Angel", 42, 42, "she", 100),
-    Animal("Fatty", "Washington Mountain Troll", 1096, 840, "he", 68),
-    Animal("Boney", "Cursed Skeleton Grunt", 24, 68, "he", 21)
-]
-
-foods = [
-    Food("KFC Double Down", 7, 5, False),
-    Food("200 Fucking McGriddles", 17, 60, False),
-    Food("Wet Kale Salad", 8, 15, True),
-    Food("Flint Water Soup", 62, 1000, True)
-]
-
-meds = [
-    Med("Great Value Tylenol", 4, 5),
-    Med("Swedish Elixir", 41, 15000)
-]
+data = load_data()
+animals = [Animal(**a) for a in data ["animals"]]
+foods = [Food(**f) for f in data ["foods"]]
+meds = [Med(**m) for m in data ["meds"]]
 
 main_menu()

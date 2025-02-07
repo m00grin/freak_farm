@@ -1,0 +1,82 @@
+{
+    "animals": [
+        {
+            "name": "Spott",
+            "kind": "Five-legged Dog",
+            "current_weight": 34,
+            "healthy_weight": 38,
+            "pronoun": "she",
+            "health": 98
+        },
+        {
+            "name": "Boney",
+            "kind": "Cursed Skeleton Grunt",
+            "current_weight": 24,
+            "healthy_weight": 68,
+            "pronoun": "he",
+            "health": 21
+        },
+        {
+            "name": "Fatty",
+            "kind": "Washington Mountain Troll",
+            "current_weight": 1096,
+            "healthy_weight": 840,
+            "pronoun": "he",
+            "health": 68
+        },
+        {
+            "name": "Angel",
+            "kind": "Flightless Angel",
+            "current_weight": 42,
+            "healthy_weight": 42,
+            "pronoun": "she",
+            "health": 100
+        },
+        {
+            "name": "Assie Stanklin",
+            "kind": "Hairless Donkey",
+            "current_weight": 148,
+            "healthy_weight": 142,
+            "pronoun": "she",
+            "health": 95
+        }
+    ],
+    "foods": [
+        {
+            "type": "KFC Double Down",
+            "quant": 7,
+            "price": 5,
+            "healthy": false
+        },
+        {
+            "type": "200 Fucking McGriddles",
+            "quant": 17,
+            "price": 60,
+            "healthy": false
+        },
+        {
+            "type": "Flint Water Soup",
+            "quant": 62,
+            "price": 1000,
+            "healthy": true
+        },
+        {
+            "type": "Wet Kale Salad",
+            "quant": 8,
+            "price": 15,
+            "healthy": true
+        }
+    ],
+    "meds": [
+        {
+            "scrip": "Great Value Tylenol",
+            "strength": 4,
+            "cost": 5
+        },
+        {
+            "scrip": "Swedish Elixir",
+            "strength": 41,
+            "cost": 15000
+        }
+    ]
+}
