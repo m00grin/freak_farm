@@ -14,7 +14,7 @@
             "current_weight": 24,
             "healthy_weight": 68,
             "pronoun": "he",
-            "health": 21
+            "health": 20
         },
         {
             "name": "Fatty",
@@ -39,19 +39,19 @@
             "current_weight": 148,
             "healthy_weight": 142,
             "pronoun": "she",
-            "health": 95
+            "health": 96
         }
     ],
     "foods": [
         {
             "type": "KFC Double Down",
-            "quant": 7,
+            "quant": 8,
             "price": 5,
             "healthy": false
         },
         {
             "type": "200 Fucking McGriddles",
-            "quant": 17,
+            "quant": 20,
             "price": 60,
             "healthy": false
         },
@@ -76,7 +76,7 @@
         },
         {
             "scrip": "Swedish Elixir",
-            "strength": 41,
+            "strength": 42,
             "cost": 15000
         }
     ]
