@@ -31,31 +31,27 @@ class Animal:
         self.pronoun = pronoun
         self.health = health
         self.clean = clean
-    
+
     def feed(self, food=None):
         print(f"\n{self.name} is currently {self.current_weight} pounds.")
         print("Commencing feeding...")
         time.sleep(1.5)
         initial_weight = self.current_weight
-        if self.current_weight > self.healthy_weight:
-            while self.current_weight > self.healthy_weight and food.healthy is True:
-                self.current_weight -= food.quant
+        while self.current_weight != self.healthy_weight:
+            if self.current_weight > self.healthy_weight and food.healthy:
+                self.current_weight = max(self.healthy_weight, self.current_weight - food.quant)
                 print(f"Feeding {self.name} {food.type}...")
                 time.sleep(1)
                 print(f"Now {self.name} is {self.current_weight} pounds.\n")
                 time.sleep(.5)
-        elif self.current_weight < self.healthy_weight:
-            while self.current_weight < self.healthy_weight and food.healthy is False:
-                self.current_weight += food.quant
+            else:
+                self.current_weight = min(self.healthy_weight, self.current_weight + food.quant)
                 print(f"Feeding {self.name} {food.type}...")
                 time.sleep(1)
                 print(f"Now {self.name} is {self.current_weight} pounds.\n")
                 time.sleep(.5)
                 print(f"After feeding {self.name} {food.type}, {self.pronoun} is now {self.current_weight} pounds!\n")
                 time.sleep(2)
-        else:
-            print(f"{self.name} is all good, and {self.pronoun} does not need food.\n")
-            time.sleep(1)
         print(f"OH SHIT!! Weight change for {self.name}: {initial_weight} -> {self.current_weight}\n")
 #        save_data()
         time.sleep(.5)
@@ -65,19 +61,14 @@ class Animal:
         print("Commencing care...")
         time.sleep(1.5)
         initial_health = self.health
-        if self.health < 100:
-            if med:
-                while self.health < 100 and med.strength > 0:
-                    self.health += med.strength
-                    print(f"Administering {self.name} {med.scrip}...")
-                    time.sleep(1)
-                    print(f"Now {self.name} has {self.health} health.\n")
-                    time.sleep(.5)
-                print(f"After giving {self.name} {med.scrip}, {self.pronoun} now has {self.health} health!\n")
-                time.sleep(2)
-        else:
-            print(f"{self.name} is all good, and {self.pronoun} does not need medicine.\n")
+        while self.health < 100:
+            self.health = min(100, med.strength + self.health)
+            print(f"Administering {self.name} {med.scrip}...")
             time.sleep(1)
+            print(f"Now {self.name} has {self.health} health.\n")
+            time.sleep(.5)
+            print(f"After giving {self.name} {med.scrip}, {self.pronoun} now has {self.health} health!\n")
+            time.sleep(2)
         print(f"OH FUCK!! Health change for {self.name}: {initial_health} -> {self.health}\n")
 #        save_data()
         time.sleep(.5)
@@ -96,7 +87,7 @@ class Med:
         self.cost = cost
 
 def find_best_food(animal):
-    if animal.current_weight >  animal.healthy_weight:
+    if animal.current_weight > animal.healthy_weight:
         healthy_foods = [f for f in foods if f.healthy]
         if animal.current_weight > 1.3 * animal.healthy_weight and healthy_foods:
             return max(healthy_foods, key=lambda f: f.quant)
