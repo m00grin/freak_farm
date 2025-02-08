@@ -39,7 +39,7 @@
             "current_weight": 148,
             "healthy_weight": 142,
             "pronoun": "she",
-            "health": 96
+            "health": 63
         }
     ],
     "foods": [
@@ -75,8 +75,18 @@
             "cost": 5
         },
         {
+            "scrip": "Shorty's Midol",
+            "strength": 16,
+            "cost": 150
+        },
+        {
+            "scrip": "SlizzQuil Severe",
+            "strength": 28,
+            "cost": 1500
+        },
+        {
             "scrip": "Swedish Elixir",
-            "strength": 42,
+            "strength": 52,
             "cost": 15000
         }
     ]

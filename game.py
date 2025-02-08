@@ -102,11 +102,12 @@ def find_best_food(animal):
     return None
 
 def find_best_med(animal):
-    health_diff = 100 - animal.health
-    if health_diff > 60:
-        return max(meds, key=lambda m: m.strength)
-    elif health_diff > 0:
-        return min(meds, key=lambda m: m.cost)
+    if animal.health < 100:
+        health_diff = 100 - animal.health
+        if health_diff > 60:
+            return max(meds, key=lambda m: m.strength)
+        else:
+            return min(meds, key=lambda m: abs(m.strength - health_diff))
     return None
 
 def feed_animals():
