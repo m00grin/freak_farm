@@ -25,6 +25,14 @@
             "health": 78
         },
         {
+            "name": "Normie",
+            "kind": "Loser",
+            "current_weight": 80,
+            "healthy_weight": 100,
+            "pronoun": "he",
+            "health": 100
+        },
+        {
             "name": "Angel",
             "kind": "Flightless Angel",
             "current_weight": 42,
@@ -36,7 +44,7 @@
         {
             "name": "Assie Stanklin",
             "kind": "Hairless Donkey",
-            "current_weight": 148,
+            "current_weight": 172,
             "healthy_weight": 142,
             "pronoun": "she",
             "health": 63
@@ -50,13 +58,25 @@
             "healthy": false
         },
         {
-            "type": "200 Fucking McGriddles",
+            "type": "Grilled Hippo Cheek",
             "quant": 20,
             "price": 60,
             "healthy": false
         },
         {
+            "type": "200 Fucking McGriddles",
+            "quant": 36,
+            "price": 80,
+            "healthy": false
+        },
+        {
             "type": "Flint Water Soup",
+            "quant": 30,
+            "price": 100,
+            "healthy": true
+        },
+        {
+            "type": "Air-Fried Air",
             "quant": 62,
             "price": 1000,
             "healthy": true

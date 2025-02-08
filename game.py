@@ -87,18 +87,13 @@ class Med:
         self.cost = cost
 
 def find_best_food(animal):
+    weight_diff = abs(animal.current_weight - animal.healthy_weight)
     if animal.current_weight > animal.healthy_weight:
         healthy_foods = [f for f in foods if f.healthy]
-        if animal.current_weight > 1.3 * animal.healthy_weight and healthy_foods:
-            return max(healthy_foods, key=lambda f: f.quant)
-        elif healthy_foods:
-            return min(healthy_foods, key=lambda f: f.price)
+        return min(healthy_foods, key=lambda f: abs(f.quant - weight_diff))
     elif animal.current_weight < animal.healthy_weight:
         unhealthy_foods = [f for f in foods if not f.healthy]
-        if animal.current_weight < .6 * animal.healthy_weight and unhealthy_foods:
-            return max(unhealthy_foods, key=lambda f: f.quant)
-        elif unhealthy_foods:
-            return min(unhealthy_foods, key=lambda f: f.price)
+        return min(unhealthy_foods, key=lambda f: abs(f.quant - weight_diff))
     return None
 
 def find_best_med(animal):
