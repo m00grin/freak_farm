@@ -10,13 +10,13 @@ def load_data():
             return json.load(file)
     return {"animals": [], "foods": [], "meds": []}
 
-def save_data():
-    with open("freak_farm.json", "w") as file:
-        json.dump({
-            "animals": [vars(a) for a in animals],
-            "foods": [vars(f) for f in foods],
-            "meds": [vars(m) for m in meds]
-        }, file, indent=4)
+# def save_data():
+#     with open("freak_farm.json", "w") as file:
+#         json.dump({
+#             "animals": [vars(a) for a in animals],
+#             "foods": [vars(f) for f in foods],
+#             "meds": [vars(m) for m in meds]
+#         }, file, indent=4)
 
 print("\n")
 title = text2art("freak.farm")
@@ -138,17 +138,17 @@ def add_animal():
     kind = input("Enter the animal's kind: ")
     time.sleep(.3)
     while True:
-            try:
-                current_weight = int(input("Enter the animal's current weight (in pounds): "))
-                if current_weight <= 0:
-                    time.sleep(.5)
-                    print("\nEnter a positive number for the weight, dumbass.")
-                else:
-                    break
-            except ValueError:
+        try:
+            current_weight = int(input("Enter the animal's current weight (in pounds): "))
+            if current_weight <= 0:
                 time.sleep(.5)
-                print("\nInvalid input. You do know what numbers are, right? Enter one of those.")
-            print("\n")
+                print("\nEnter a positive number for the weight, dumbass.")
+            else:
+                break
+        except ValueError:
+            time.sleep(.5)
+            print("\nInvalid input. You do know what numbers are, right? Enter one of those.")
+        print("\n")
     time.sleep(.3)
     while True:
         try:
@@ -175,6 +175,7 @@ def intro_welcome():
     time.sleep(2)
 
 def animal_overview():
+    time.sleep(.5)
     for animal in animals:
         print(Fore.RED + f"\n{animal.name} the {animal.kind}" + Style.RESET_ALL)
         weight_status = "(Overweight)" if animal.current_weight > animal.healthy_weight else \
@@ -184,7 +185,7 @@ def animal_overview():
                       "Filthy & Gross"
         print(f"Current Weight: {animal.current_weight} pounds {weight_status}")
         print(f"Current Health: {animal.health} / 100")
-        print(f"{cleanliness}")
+        print(f"Cleanliness: {cleanliness}")
         time.sleep(1)
 
 def main_menu():
